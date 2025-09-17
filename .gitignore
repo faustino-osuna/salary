@@ -1,0 +1,36 @@
+# --------------------
+# Node
+# --------------------
+node_modules/
+yarn.lock
+
+# --------------------
+# Environment
+# --------------------
+.env
+
+# --------------------
+# Backend
+# --------------------
+apps/backend/node_modules/
+apps/backend/dist/
+apps/backend/generated/prisma/
+
+# --------------------
+# Frontend
+# --------------------
+apps/frontend/node_modules/
+apps/frontend/dist/
+apps/frontend/build/
+apps/frontend/.DS_Store
+apps/frontend/.react-router/
+
+# --------------------
+# Logs
+# --------------------
+*.log
+
+# --------------------
+# IDE / Editor
+# --------------------
+.vscode/

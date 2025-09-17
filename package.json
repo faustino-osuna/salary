@@ -1,0 +1,20 @@
+{
+  "name": "practica-desarrollo-coppel",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "private": "true",
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev:backend": "yarn workspace backend dev",
+    "dev:frontend": "yarn workspace frontend dev",
+    "dev": "concurrently \"yarn dev:frontend\" \"yarn dev:backend\""
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "concurrently": "^9.2.1",
+    "typescript": "^5.9.2"
+  }
+}
