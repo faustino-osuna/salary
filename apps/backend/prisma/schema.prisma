@@ -6,10 +6,79 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
 }
 
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+model Role {
+  id      Int      @id @default(autoincrement())
+  nombre  String   @db.VarChar(50)
+
+  // Relaciones
+  bonos        Bono[]
+  empleados    Empleado[]
+  movimientos  Movimiento[]
+}
+
+model TipoEmpleado {
+  id      Int      @id @default(autoincrement())
+  nombre  String   @db.VarChar(50) // 'interno' | 'subcontratado'
+
+  // Relaciones
+  empleados   Empleado[]
+  movimientos Movimiento[]
+}
+
+model Bono {
+  id       Int     @id @default(autoincrement())
+  cantidad Decimal @db.Decimal(10, 2)
+
+  // FK
+  rolId Int
+  rol   Role @relation(fields: [rolId], references: [id])
+}
+
+model Empleado {
+  id     Int     @id @default(autoincrement())
+  nombre String @db.VarChar(65)
+  numero Int    @db.Int @unique
+  activo Boolean @default(true)
+
+  // FK
+  rolId  Int
+  rol    Role @relation(fields: [rolId], references: [id])
+
+  tipoId Int
+  tipo   TipoEmpleado @relation(fields: [tipoId], references: [id])
+
+  // Relaciones
+  movimientos Movimiento[]
+}
+
+model Movimiento {
+  id             Int      @id @default(autoincrement())
+  horasTrabajadas Decimal  @default(8.00) @db.Decimal(6, 2)
+  entregas        Int      @default(0)
+  fecha           DateTime @db.Date
+
+  // FK
+  empleadoId Int
+  empleado   Empleado @relation(fields: [empleadoId], references: [id])
+
+  rolId Int
+  rol   Role @relation(fields: [rolId], references: [id])
+
+  tipoId Int
+  tipo   TipoEmpleado @relation(fields: [tipoId], references: [id])
+}
+
+model ParametroSueldo {
+  id          Int     @id @default(autoincrement())
+  nombre      String  @unique @db.VarChar(65)
+  valor       Decimal @db.Decimal(12, 2)
+  descripcion String? @db.VarChar(200)
+}
+
