@@ -6,7 +6,6 @@ export class DeleteEmpleadoUseCase {
 
   async execute({ id }: DeleteEmpleadoDTO): Promise<void> {
     const empleado = await this.repository.findById(id);
-    console.log(empleado);
 
     if (!empleado) {
       throw new Error("Empleado no existe");

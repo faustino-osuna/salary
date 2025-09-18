@@ -11,8 +11,6 @@ export class UpdateEmpleadoUseCase {
       throw new Error("Empleado no existe");
     }
 
-    console.log(empleado);
-
     empleado.actualizar(data);
 
     await this.repository.update(empleado);
