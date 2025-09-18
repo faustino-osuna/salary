@@ -3,7 +3,7 @@ import { Empleado } from "../../domain/entities/Empleado";
 import { CreateEmpleadoDTO } from "../dto/CreateEmpleadoDTO";
 
 export class CreateEmpleadoUseCase {
-  constructor(private empleadoRepository: IEmpleadoRepository) {}
+  constructor(private repository: IEmpleadoRepository) {}
 
   async execute(data: CreateEmpleadoDTO): Promise<void> {
     const empleado = new Empleado(
@@ -15,6 +15,6 @@ export class CreateEmpleadoUseCase {
       data.tipoId
     );
 
-    await this.empleadoRepository.create(empleado);
+    await this.repository.create(empleado);
   }
 }

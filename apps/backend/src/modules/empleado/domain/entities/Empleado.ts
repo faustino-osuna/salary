@@ -44,6 +44,42 @@ export class Empleado {
     this._tipoId = nuevoTipoId;
   }
 
+  actualizar(
+    data: Partial<{
+      nombre: string;
+      numero: number;
+      activo: boolean;
+      rolId: number;
+      tipoId: number;
+    }>
+  ) {
+    if (data.nombre !== undefined) {
+      if (!data.nombre || data.nombre.trim().length === 0) {
+        throw new Error("El nombre no puede estar vacío");
+      }
+      this._nombre = data.nombre;
+    }
+
+    if (data.numero !== undefined) {
+      if (data.numero <= 0) {
+        throw new Error("El número de empleado debe ser mayor que 0");
+      }
+      this._numero = data.numero;
+    }
+
+    if (data.activo !== undefined) {
+      this._activo = data.activo;
+    }
+
+    if (data.rolId !== undefined) {
+      this._rolId = data.rolId;
+    }
+
+    if (data.tipoId !== undefined) {
+      this._tipoId = data.tipoId;
+    }
+  }
+
   toPrimitives() {
     return {
       id: this.id,
