@@ -20,8 +20,8 @@ export default function Header({ title, search, setSearch, onCreate }: HeaderPro
         onChange={(e) => setSearch(e.target.value)}
         sx={{ mb: 2 }}
       />
-      <Button variant="contained" onClick={onCreate}>
-        Crear Empleado
+      <Button variant="contained" onClick={onCreate} sx={{ width: "15%" }}>
+        Crear
       </Button>
     </Stack>
     </Stack>

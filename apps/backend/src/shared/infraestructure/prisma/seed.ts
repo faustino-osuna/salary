@@ -25,6 +25,13 @@ async function main() {
     ],
     skipDuplicates: true,
   });
+
+  await prisma.movimiento.createMany({
+    data: [
+      { empleadoId: 1, rolId: 1, tipoId: 1, fecha: "2025-09-09" }
+    ],
+    skipDuplicates: true,
+  })
 }
 
 main()
