@@ -16,14 +16,11 @@ import SaveIcon from "@mui/icons-material/Save";
 import type { ReactNode, FormEvent, ComponentProps } from "react";
 import Modal from "../ui/Modal";
 
-// Tipo para los breakpoints de MUI
 type BreakpointValue = Breakpoint | false;
 
-// Función auxiliar tipada
 const isBreakpoint = (value: unknown): value is Breakpoint =>
   ["xs", "sm", "md", "lg", "xl"].includes(String(value));
 
-// Props del componente FormModal
 interface FormModalProps
   extends Omit<
     ComponentProps<typeof Modal>,

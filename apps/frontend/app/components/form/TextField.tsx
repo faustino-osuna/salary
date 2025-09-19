@@ -1,7 +1,6 @@
 import { TextField as MuiTextField, Stack, Typography } from "@mui/material";
 import type { ComponentProps, ChangeEvent } from "react";
 
-// Interfaz para las props adicionales del componente
 interface Props {
   title?: string;
   required?: boolean;
@@ -9,7 +8,6 @@ interface Props {
   regex?: RegExp;
 }
 
-// Tipo combinado para todas las props del componente
 type TextFieldProps = ComponentProps<typeof MuiTextField> & Props;
 
 export default function TextField({
