@@ -11,7 +11,8 @@ export class Movimiento {
     private _fecha: Date,
     private _empleado?: Empleado,
     private _rol?: Role,
-    private _TipoEmpleado?: TipoEmpleado
+    private _TipoEmpleado?: TipoEmpleado,
+    private _cubrioTurno?: boolean,
   ) {
     if (_empleadoId <= 0) throw new Error("EmpleadoId inválido");
     if (_rolId <= 0) throw new Error("RolId inválido");
@@ -37,6 +38,10 @@ export class Movimiento {
   }
   get fecha() {
     return this._fecha;
+  }
+
+  get cubrioTurno() {
+    return this._cubrioTurno;
   }
 
   get empleado(): Empleado | undefined {
@@ -67,6 +72,7 @@ export class Movimiento {
       empleado: this._empleado,
       rol: this._rol,
       tipoEmpleado: this._TipoEmpleado,
+      cubrioTurno: this._cubrioTurno
     };
   }
 }

@@ -26,6 +26,7 @@ export class GetMovimientosUseCase {
         id: m.tipoEmpleado!.id,
         nombre: m.tipoEmpleado!.nombre,
       },
+      cubrio_turno: m.cubrioTurno
     }));
   }
 }

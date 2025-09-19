@@ -16,7 +16,6 @@ app.use(
 app.use(express.json());
 app.use("/api/v1/empleado", empleadoRouter);
 app.use("/api/v1/movimiento", movimientoRouter);
-
 app.use("/api/v1/tipo", tipoRouter);
 app.use("/api/v1/rol", rolRouter);
 export default app;

@@ -33,7 +33,7 @@ export class PrismaMovimientoRepository implements IMovimientoRepository {
   async findById(id: number): Promise<Movimiento | null> {
     const record = await this.prisma.movimiento.findUnique({
       where: { id },
-      include: { empleado: true, rol: true, tipo: true },
+      include: { Empleado: true, Role: true, TipoEmpleado: true },
     });
     if (!record) return null;
 
@@ -45,15 +45,16 @@ export class PrismaMovimientoRepository implements IMovimientoRepository {
       Number(record.horasTrabajadas),
       record.entregas,
       record.fecha,
-      record.empleado,
-      record.rol,
-      record.tipo
+      record.Empleado,
+      record.Role,
+      record.TipoEmpleado,
+      record.cubrio_turno
     );
   }
 
   async findAll(): Promise<Movimiento[]> {
     const records = await this.prisma.movimiento.findMany({
-      include: { empleado: true, rol: true, tipo: true },
+      include: { Empleado: true, Role: true, TipoEmpleado: true },
     });
     return records.map(
       (r) =>
@@ -65,9 +66,10 @@ export class PrismaMovimientoRepository implements IMovimientoRepository {
           Number(r.horasTrabajadas),
           r.entregas,
           r.fecha,
-          r.empleado,
-          r.rol,
-          r.tipo
+          r.Empleado,
+          r.Role,
+          r.TipoEmpleado,
+          r.cubrio_turno
         )
     );
   }
@@ -75,7 +77,7 @@ export class PrismaMovimientoRepository implements IMovimientoRepository {
   async findAllByIdEmpleado(id: number): Promise<Movimiento[] | null> {
     const records = await this.prisma.movimiento.findMany({
       where: { empleadoId: id },
-      include: { empleado: true, rol: true, tipo: true },
+      include: { Empleado: true, Role: true, TipoEmpleado: true },
     });
 
     return records
@@ -89,9 +91,10 @@ export class PrismaMovimientoRepository implements IMovimientoRepository {
               Number(r.horasTrabajadas),
               r.entregas,
               r.fecha,
-              r.empleado,
-              r.rol,
-              r.tipo
+              r.Empleado,
+              r.Role,
+              r.TipoEmpleado,
+              r.cubrio_turno
             )
         )
       : null;
