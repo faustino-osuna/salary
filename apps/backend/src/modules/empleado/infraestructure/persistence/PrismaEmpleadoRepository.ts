@@ -59,14 +59,18 @@ export class PrismaEmpleadoRepository implements IEmpleadoRepository {
       : null;
   }
 
-  async findAll(): Promise<Empleado[]> {
+  async findAll(search?: string): Promise<Empleado[]> {
     const records = await prisma.empleado.findMany({
-      where: { activo: true },
+      where: {
+        activo: true,
+        nombre: search ? { contains: search } : undefined,
+      },
       include: {
         rol: true,
         tipo: true,
       },
     });
+
     return records.map(
       (r) =>
         new Empleado(
