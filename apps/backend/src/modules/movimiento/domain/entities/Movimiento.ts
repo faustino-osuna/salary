@@ -1,3 +1,5 @@
+import { Empleado, Role, TipoEmpleado } from "@prisma/client";
+
 export class Movimiento {
   constructor(
     public readonly id: number | null,
@@ -6,7 +8,10 @@ export class Movimiento {
     private _tipoId: number,
     private _horasTrabajadas: number = 8,
     private _entregas: number = 0,
-    private _fecha: Date
+    private _fecha: Date,
+    private _empleado?: Empleado,
+    private _rol?: Role,
+    private _TipoEmpleado?: TipoEmpleado
   ) {
     if (_empleadoId <= 0) throw new Error("EmpleadoId inválido");
     if (_rolId <= 0) throw new Error("RolId inválido");
@@ -34,6 +39,18 @@ export class Movimiento {
     return this._fecha;
   }
 
+  get empleado(): Empleado | undefined {
+    return this._empleado;
+  }
+
+  get rol(): Role | undefined {
+    return this._rol;
+  }
+
+  get tipoEmpleado(): TipoEmpleado | undefined {
+    return this._TipoEmpleado;
+  }
+
   actualizar(data: Partial<Omit<Movimiento, "id">>) {
     Object.assign(this, data);
   }
@@ -47,6 +64,9 @@ export class Movimiento {
       horasTrabajadas: this._horasTrabajadas,
       entregas: this._entregas,
       fecha: this._fecha,
+      empleado: this._empleado,
+      rol: this._rol,
+      tipoEmpleado: this._TipoEmpleado,
     };
   }
 }

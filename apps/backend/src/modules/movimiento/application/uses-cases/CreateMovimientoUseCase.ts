@@ -1,4 +1,3 @@
-// modules/movimiento/application/use-cases/CreateMovimientoUseCase.ts
 import { IMovimientoRepository } from "../../domain/repositories/IMovimientoRepository";
 import { Movimiento } from "../../domain/entities/Movimiento";
 import { CreateMovimientoDTO } from "../dto/CreateMovimientoDTO";

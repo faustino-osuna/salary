@@ -34,6 +34,7 @@ CREATE TABLE movimientos (
   horas_trabajadas DECIMAL(6,2) NOT NULL DEFAULT 8,
   entregas INT NOT NULL DEFAULT 0,
   fecha DATE NOT NULL,
+  cubrio_turno TINYINT(1) NOT NULL DEFAULT 0,
   CONSTRAINT fk_movimiento_empleado FOREIGN KEY (empleado_id) REFERENCES empleados(id),
   CONSTRAINT fk_movimiento_rol FOREIGN KEY (rol_id) REFERENCES roles(id),
   CONSTRAINT fk_movimiento_tipo FOREIGN KEY (tipo_id) REFERENCES tipo_empleados(id)

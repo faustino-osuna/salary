@@ -6,4 +6,5 @@ export const movimientoRouter = Router();
 const repository = new PrismaMovimientoRepository();
 const controller = new MovimientoController(repository);
 
+movimientoRouter.get("/", controller.findAll);
 movimientoRouter.post("/", controller.create);
