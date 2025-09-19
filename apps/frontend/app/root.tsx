@@ -9,6 +9,10 @@ import {
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { Route } from "./+types/root";
 import "./app.css";
+import Sidebar from "./components/ui/SideBar";
+import { navItems } from "./constants/general.constants";
+import { Stack } from "@mui/material";
+import Default from "./components/containers/Default";
 
 const queryClient = new QueryClient();
 
@@ -35,7 +39,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        {children}
+        <Stack direction="row">
+          <Sidebar items={navItems} />
+          <Default sx={{ flex: 1 }}>{children}</Default>
+        </Stack>
         <ScrollRestoration />
         <Scripts />
       </body>

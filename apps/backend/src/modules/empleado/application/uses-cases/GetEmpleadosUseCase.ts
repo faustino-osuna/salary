@@ -13,12 +13,12 @@ export class GetEmpleadosUseCase {
       numero: e.numero,
       activo: e.activo,
       rol: {
-        id: e.rol!.id,
-        nombre: e.rol!.nombre,
+        id: e.role!.id,
+        nombre: e.role!.nombre,
       },
       tipo: {
-        id: e.tipo!.id,
-        nombre: e.tipo!.nombre,
+        id: e.tipoEmpleado!.id,
+        nombre: e.tipoEmpleado!.nombre,
       },
     }));
   }
