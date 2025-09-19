@@ -27,7 +27,7 @@ export class PrismaEmpleadoRepository implements IEmpleadoRepository {
   async findById(id: number): Promise<Empleado | null> {
     const record = await this.prisma.empleado.findUnique({
       where: { id, activo: true },
-      include: { role: true, tipoempleado: true },
+      include: { rol: true, tipo: true },
     });
     return record
       ? new Empleado(
@@ -37,8 +37,8 @@ export class PrismaEmpleadoRepository implements IEmpleadoRepository {
           record.activo,
           record.rolId,
           record.tipoId,
-          record.role,
-          record.tipoempleado
+          record.rol,
+          record.tipo
         )
       : null;
   }
@@ -66,8 +66,8 @@ export class PrismaEmpleadoRepository implements IEmpleadoRepository {
         nombre: search ? { contains: search } : undefined,
       },
       include: {
-        role: true,
-        tipoempleado: true,
+        rol: true,
+        tipo: true,
       },
     });
 
@@ -80,8 +80,8 @@ export class PrismaEmpleadoRepository implements IEmpleadoRepository {
           r.activo,
           r.rolId,
           r.tipoId,
-          r.role,
-          r.tipoempleado
+          r.rol,
+          r.tipo
         )
     );
   }

@@ -13,7 +13,7 @@ export class EmpleadoController {
     const useCase = new CreateEmpleadoUseCase(this.repository);
 
     try {
-      await useCase.execute(req.body);
+      await useCase.execute(req.body.data);
       res.status(201).json({ message: "empleado creado" });
     } catch (error: any) {
       res.status(400).json({ error: error.message });
@@ -29,7 +29,7 @@ export class EmpleadoController {
       if (isNaN(id)) {
         return res.status(400).json({ error: "ID inválido" });
       }
-      await useCase.execute({ id, ...req.body });
+      await useCase.execute({ id, ...req.body.data });
       res.status(200).json({ message: "empleado actualizado" });
     } catch (error: any) {
       res.status(400).json({ error: error.message });
@@ -73,7 +73,7 @@ export class EmpleadoController {
 
   getAll = async (req: Request, res: Response) => {
     const useCase = new GetEmpleadosUseCase(this.repository);
-    const { search } = req.query; // capturamos ?search=texto
+    const { search } = req.query;
 
     try {
       const empleados = await useCase.execute(search as string | undefined);

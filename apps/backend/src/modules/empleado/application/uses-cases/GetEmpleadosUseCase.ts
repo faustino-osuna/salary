@@ -6,6 +6,7 @@ export class GetEmpleadosUseCase {
 
   async execute(search?: string): Promise<GetEmpleadosDTO[]> {
     const empleados = await this.repository.findAll(search);
+    console.log(empleados)
 
     return empleados.map((e) => ({
       id: e.id!,
