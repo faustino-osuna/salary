@@ -1,0 +1,19 @@
+version: "3.9"
+
+services:
+  db:
+    image: mysql:8.1          # Puedes usar otra versión si quieres
+    container_name: mysql_test
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass   # contraseña del root
+      MYSQL_DATABASE: testdb          # nombre de la base de datos inicial
+      MYSQL_USER: usertest            # usuario normal
+      MYSQL_PASSWORD: userpass        # contraseña del usuario normal
+    ports:
+      - "3306:3306"          # puerto local -> puerto del contenedor
+    volumes:
+      - db_data:/var/lib/mysql   # para persistencia de datos
+
+volumes:
+  db_data:

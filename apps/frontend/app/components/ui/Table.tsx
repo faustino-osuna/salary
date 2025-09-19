@@ -8,36 +8,51 @@ import {
   TableHead,
   TableRow,
   Paper,
-  TextField,
   IconButton,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import Header from "./Header";
 
 interface TableProps {
+  title: string;
   columns: string[];
   queryKey: string[];
   queryFn: (search?: string) => Promise<any[]>;
   deleteFn?: (row: Record<string, any>) => Promise<void>;
+  ModalComponent?: React.ComponentType<{
+    open: boolean;
+    onClose: () => void;
+    data?: Record<string, any> | null;
+    onSaved?: () => void;
+    editMode?: boolean
+  }>;
 }
 
 export default function SimpleTable({
+  title,
   columns,
   queryKey,
   queryFn,
   deleteFn,
+  ModalComponent,
 }: TableProps) {
   const [search, setSearch] = useState("");
+  const [openModal, setOpenModal] = useState(false);
+  const [selectedRow, setSelectedRow] = useState<Record<string, any> | null>(null);
+
   const queryClient = useQueryClient();
 
   const { data, isLoading } = useQuery({
     queryKey: [...queryKey, search],
     queryFn: () => queryFn(search),
+    
   });
 
   const mutation = useMutation({
     mutationFn: deleteFn,
     onSuccess: () => {
+      setSelectedRow(null)
       queryClient.invalidateQueries({ queryKey });
     },
   });
@@ -45,17 +60,26 @@ export default function SimpleTable({
   const handleDelete = (row: Record<string, any>) => {
     if (!deleteFn) return;
     mutation.mutate(row);
+    setSelectedRow(null);
+  };
+
+  const handleEdit = (row: Record<string, any>) => {
+    setSelectedRow(row);
+    setOpenModal(true);
+  };
+
+  const handleCreate = () => {
+    setSelectedRow(null);
+    setOpenModal(true);
   };
 
   return (
-    <div>
-      <TextField
-        label="Buscar por nombre"
-        variant="outlined"
-        size="small"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        style={{ marginBottom: 16 }}
+    <>
+      <Header
+        title={title}
+        search={search}
+        setSearch={setSearch}
+        onCreate={handleCreate}
       />
 
       <TableContainer component={Paper}>
@@ -89,16 +113,10 @@ export default function SimpleTable({
                   })}
                   {deleteFn && (
                     <TableCell>
-                      <IconButton
-                        color="primary"
-                        onClick={() => console.log("Editar", row)}
-                      >
+                      <IconButton color="primary" onClick={() => handleEdit(row)}>
                         <EditIcon />
                       </IconButton>
-                      <IconButton
-                        color="error"
-                        onClick={() => handleDelete(row)}
-                      >
+                      <IconButton color="error" onClick={() => handleDelete(row)}>
                         <DeleteIcon />
                       </IconButton>
                     </TableCell>
@@ -109,6 +127,16 @@ export default function SimpleTable({
           </TableBody>
         </Table>
       </TableContainer>
-    </div>
+
+      {ModalComponent && (
+        <ModalComponent
+          open={openModal}
+          onClose={() => setOpenModal(false)}
+          data={selectedRow}
+          onSaved={() => queryClient.invalidateQueries({ queryKey })}
+          editMode={!selectedRow}
+        />
+      )}
+    </>
   );
 }

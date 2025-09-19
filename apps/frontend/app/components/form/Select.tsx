@@ -25,7 +25,7 @@ interface Props<T extends OptionType>
   loading?: boolean;
   placeholder?: string;
   emptyText?: string;
-  value?: T[keyof T] | "";
+  value?: T[keyof T] | null | undefined | "";
   onSelectionChange?: (prev?: T, next?: T) => void;
   onChange?: MuiSelectProps["onChange"];
 }
@@ -43,20 +43,21 @@ export default function Select<T extends OptionType>({
   required,
   loading,
   placeholder = "Seleccionar...",
-  value = "",
+  value = null,
   emptyText = "No hay elementos",
   onChange,
   onSelectionChange,
   ...props
 }: Props<T>) {
+  // Map de opciones por su valueProp para buscar rápido
   const elemsById = useMemo(
     () => new Map(options.map((e) => [e[valueProp], e])),
     [options, valueProp]
   );
 
   const handleChange: MuiSelectProps["onChange"] = (event, _child) => {
-    const newValue = event.target.value as T[keyof T]; // casteamos seguro
-    const prevOption = value ? elemsById.get(value as T[keyof T]) : undefined;
+    const newValue = event.target.value as T[keyof T];
+    const prevOption = value != null ? elemsById.get(value as T[keyof T]) : undefined;
     const nextOption = elemsById.get(newValue);
 
     onSelectionChange?.(prevOption, nextOption);
@@ -71,9 +72,10 @@ export default function Select<T extends OptionType>({
           {required ? " *" : ""}
         </Typography>
       )}
+
       <MuiSelect
         {...props}
-        value={value}
+        value={value ?? ""}
         onChange={handleChange}
         displayEmpty
         renderValue={(selected) => {
@@ -90,24 +92,26 @@ export default function Select<T extends OptionType>({
             );
           }
 
-          if (!selected) {
+          if (selected === null || selected === undefined || selected === "") {
             return <StyledPlaceholder>{placeholder}</StyledPlaceholder>;
           }
 
-          return elemsById.get(selected as T[keyof T])?.[labelProp];
+          return elemsById.get(selected as T[keyof T])?.[labelProp] ?? placeholder;
         }}
       >
-        {options.map((option) => (
-          <MenuItem key={option[valueProp]} value={option[valueProp]}>
-            {option[labelProp]}
-          </MenuItem>
-        ))}
-        {options.length === 0 && (
+        {options.length > 0 ? (
+          options.map((option) => (
+            <MenuItem key={option[valueProp]} value={option[valueProp]}>
+              {option[labelProp]}
+            </MenuItem>
+          ))
+        ) : (
           <MenuItem disabled>
             <StyledPlaceholder>{emptyText}</StyledPlaceholder>
           </MenuItem>
         )}
       </MuiSelect>
+
       {helperText && <FormHelperText>{helperText}</FormHelperText>}
     </Stack>
   );
