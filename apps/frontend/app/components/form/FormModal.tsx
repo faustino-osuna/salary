@@ -1,39 +1,18 @@
-import {
-  Typography,
-  Stack,
-  Button,
-  IconButton,
-  Grid,
-  type Breakpoint,
-} from "@mui/material";
-import {
-  FormProvider,
-  type UseFormReturn,
-  type FieldValues,
-} from "react-hook-form";
+import { type UseFormReturn, type FieldValues, FormProvider } from "react-hook-form";
+import { Stack, Typography, IconButton, Button, Grid } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import SaveIcon from "@mui/icons-material/Save";
-import type { ReactNode, FormEvent, ComponentProps } from "react";
 import Modal from "../ui/Modal";
+import type { FormEvent, ReactNode } from "react";
 
-type BreakpointValue = Breakpoint | false;
-
-const isBreakpoint = (value: unknown): value is Breakpoint =>
-  ["xs", "sm", "md", "lg", "xl"].includes(String(value));
-
-interface FormModalProps
-  extends Omit<
-    ComponentProps<typeof Modal>,
-    "children" | "onSubmit" | "maxWidth"
-  > {
+interface FormModalProps<T extends FieldValues = FieldValues> {
   title?: string;
-  isEditMode?: boolean;
+  open: boolean;
   children: ReactNode;
   onClose: () => void;
-  accept?: () => void;
-  form: UseFormReturn<FieldValues>;
+  form: UseFormReturn<T>;
   onSubmit?: (event: FormEvent<HTMLFormElement>) => void;
-  maxWidth?: Breakpoint | string | number;
+  maxWidth?: string;
   fullWidth?: boolean;
   isMutating?: boolean;
   saveText?: string;
@@ -41,31 +20,29 @@ interface FormModalProps
   Footer?: ReactNode;
 }
 
-export default function FormModal({
+export default function FormModal<T extends FieldValues>({
   title,
-  isEditMode,
+  open,
   children,
   onClose,
-  accept,
   form,
   onSubmit,
   maxWidth,
-  fullWidth = true,
+  fullWidth = false,
   isMutating = false,
-  saveText = isEditMode ? "Guardar cambios" : "Guardar",
+  saveText = "Guardar",
   hideSaveButtonIcon = false,
   Footer,
   ...props
-}: FormModalProps) {
+}: FormModalProps<T>) {
   return (
     <Modal
+      open={open}
       {...props}
-      maxWidth={isBreakpoint(maxWidth) ? maxWidth : false}
+      maxWidth={false}
       scroll="body"
       fullWidth={fullWidth}
-      PaperProps={{
-        sx: { maxWidth: isBreakpoint(maxWidth) ? "auto" : maxWidth },
-      }}
+      PaperProps={{ sx: { maxWidth: maxWidth ?? "auto" } }}
     >
       <Stack p={4} gap={3} width="100%">
         <Stack direction="row" justifyContent="space-between">
@@ -93,12 +70,9 @@ export default function FormModal({
                 <Button
                   variant="contained"
                   sx={{ width: "50%", maxWidth: 240 }}
-                  startIcon={
-                    !hideSaveButtonIcon && <SaveIcon fontSize="small" />
-                  }
-                  onClick={accept}
-                  disabled={isMutating}
+                  startIcon={!hideSaveButtonIcon && <SaveIcon fontSize="small" />}
                   type="submit"
+                  disabled={isMutating}
                 >
                   {saveText}
                 </Button>
