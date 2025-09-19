@@ -1,3 +1,5 @@
+import { Role, TipoEmpleado } from "@prisma/client";
+
 export class Empleado {
   constructor(
     public readonly id: number | null,
@@ -5,7 +7,9 @@ export class Empleado {
     private _numero: number,
     private _activo: boolean,
     private _rolId: number,
-    private _tipoId: number
+    private _tipoId: number,
+    private _rol?: Role,
+    private _TipoEmpleado?: TipoEmpleado
   ) {
     if (!_nombre || _nombre.trim().length === 0) {
       throw new Error("El nombre no puede estar vacío");
@@ -26,6 +30,14 @@ export class Empleado {
 
   get activo() {
     return this._activo;
+  }
+
+  get rol(): Role | undefined {
+    return this._rol;
+  }
+
+  get tipo(): TipoEmpleado | undefined {
+    return this._TipoEmpleado;
   }
 
   activar() {
@@ -88,6 +100,8 @@ export class Empleado {
       activo: this._activo,
       rolId: this._rolId,
       tipoId: this._tipoId,
+      rol: this._rol,
+      tipoEmpleado: this._TipoEmpleado,
     };
   }
 }

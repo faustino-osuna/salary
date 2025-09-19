@@ -22,9 +22,14 @@ export class EmpleadoController {
 
   update = async (req: Request, res: Response) => {
     const useCase = new UpdateEmpleadoUseCase(this.repository);
+    const { id: idEmpleado } = req.params;
 
     try {
-      await useCase.execute(req.body);
+      const id = parseInt(idEmpleado, 10);
+      if (isNaN(id)) {
+        return res.status(400).json({ error: "ID inválido" });
+      }
+      await useCase.execute({ id, ...req.body });
       res.status(200).json({ message: "empleado actualizado" });
     } catch (error: any) {
       res.status(400).json({ error: error.message });

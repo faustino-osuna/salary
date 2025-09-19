@@ -6,14 +6,14 @@ export class PrismaEmpleadoRepository implements IEmpleadoRepository {
   private prisma = prisma;
 
   async create(empleado: Empleado): Promise<void> {
-    const { id, ...data } = empleado.toPrimitives();
+    const { id, rol, tipoEmpleado, ...data } = empleado.toPrimitives();
     await this.prisma.empleado.create({
       data,
     });
   }
 
   async update(empleado: Empleado): Promise<void> {
-    const { id, ...rest } = empleado.toPrimitives();
+    const { id, rol, tipoEmpleado, ...rest } = empleado.toPrimitives();
     await this.prisma.empleado.update({
       where: { id: empleado.id! },
       data: rest,
@@ -25,7 +25,10 @@ export class PrismaEmpleadoRepository implements IEmpleadoRepository {
   }
 
   async findById(id: number): Promise<Empleado | null> {
-    const record = await this.prisma.empleado.findUnique({ where: { id } });
+    const record = await this.prisma.empleado.findUnique({
+      where: { id, activo: true },
+      include: { rol: true, tipo: true },
+    });
     return record
       ? new Empleado(
           record.id,
@@ -33,13 +36,17 @@ export class PrismaEmpleadoRepository implements IEmpleadoRepository {
           record.numero,
           record.activo,
           record.rolId,
-          record.tipoId
+          record.tipoId,
+          record.rol,
+          record.tipo
         )
       : null;
   }
 
   async findByNumber(numero: number): Promise<Empleado | null> {
-    const record = await this.prisma.empleado.findUnique({ where: { numero } });
+    const record = await this.prisma.empleado.findUnique({
+      where: { numero, activo: true },
+    });
     return record
       ? new Empleado(
           record.id,
@@ -53,9 +60,25 @@ export class PrismaEmpleadoRepository implements IEmpleadoRepository {
   }
 
   async findAll(): Promise<Empleado[]> {
-    const records = await prisma.empleado.findMany();
+    const records = await prisma.empleado.findMany({
+      where: { activo: true },
+      include: {
+        rol: true,
+        tipo: true,
+      },
+    });
     return records.map(
-      (r) => new Empleado(r.id, r.nombre, r.numero, r.activo, r.rolId, r.tipoId)
+      (r) =>
+        new Empleado(
+          r.id,
+          r.nombre,
+          r.numero,
+          r.activo,
+          r.rolId,
+          r.tipoId,
+          r.rol,
+          r.tipo
+        )
     );
   }
 }
