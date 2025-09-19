@@ -71,11 +71,12 @@ export class EmpleadoController {
     }
   };
 
-  getAll = async (_req: Request, res: Response) => {
+  getAll = async (req: Request, res: Response) => {
     const useCase = new GetEmpleadosUseCase(this.repository);
+    const { search } = req.query; // capturamos ?search=texto
 
     try {
-      const empleados = await useCase.execute();
+      const empleados = await useCase.execute(search as string | undefined);
       res.status(200).json(empleados);
     } catch (error: any) {
       res.status(500).json({ error: "Error al obtener los empleados" });

@@ -6,5 +6,5 @@ export interface IEmpleadoRepository {
   delete(id: number): Promise<void>;
   findById(id: number): Promise<Empleado | null>;
   findByNumber(numero: number): Promise<Empleado | null>;
-  findAll(): Promise<Empleado[]>;
+  findAll(search?: string): Promise<Empleado[]>;
 }

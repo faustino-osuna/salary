@@ -4,8 +4,8 @@ import { GetEmpleadosDTO } from "../dto/GetEmpleadosDTO";
 export class GetEmpleadosUseCase {
   constructor(private repository: IEmpleadoRepository) {}
 
-  async execute(): Promise<GetEmpleadosDTO[]> {
-    const empleados = await this.repository.findAll();
+  async execute(search?: string): Promise<GetEmpleadosDTO[]> {
+    const empleados = await this.repository.findAll(search);
 
     return empleados.map((e) => ({
       id: e.id!,
