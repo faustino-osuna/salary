@@ -32,11 +32,11 @@ export class Empleado {
     return this._activo;
   }
 
-  get rol(): Role | undefined {
+  get role(): Role | undefined {
     return this._rol;
   }
 
-  get tipo(): TipoEmpleado | undefined {
+  get tipoEmpleado(): TipoEmpleado | undefined {
     return this._TipoEmpleado;
   }
 
