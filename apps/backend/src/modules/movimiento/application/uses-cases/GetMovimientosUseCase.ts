@@ -4,14 +4,14 @@ import { GetMovimientosDTO } from "../dto/GetMovimientosDTO";
 export class GetMovimientosUseCase {
   constructor(private repository: IMovimientoRepository) {}
 
-  async execute(): Promise<GetMovimientosDTO[]> {
-    const movimientos = await this.repository.findAll();
+  async execute(search?: string): Promise<GetMovimientosDTO[]> {
+    const movimientos = await this.repository.findAll(search);
 
     return movimientos.map((m) => ({
       id: m.id!,
       horasTrabajadas: m.horasTrabajadas,
       entregas: m.entregas,
-      fecha: m.fecha.toISOString(),
+      fecha: m.fecha.toISOString().split('T')[0],
       empleado: {
         id: m.empleado!.id!,
         nombre: m.empleado!.nombre,

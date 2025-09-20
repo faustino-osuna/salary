@@ -5,6 +5,6 @@ export interface IMovimientoRepository {
   update(movimiento: Movimiento): Promise<void>;
   delete(id: number): Promise<void>;
   findById(id: number): Promise<Movimiento | null>;
-  findAll(): Promise<Movimiento[]>;
+  findAll(search?: string): Promise<Movimiento[]>;
   findAllByIdEmpleado(id: number): Promise<Movimiento[] | null>;
 }

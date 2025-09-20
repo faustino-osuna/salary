@@ -6,23 +6,34 @@ export class PrismaMovimientoRepository implements IMovimientoRepository {
   private prisma = prisma;
 
   async create(movimiento: Movimiento): Promise<void> {
-    const { id, fecha, empleado, rol, tipoEmpleado, ...rest } =
+    const { id, fecha, empleado, rol, tipoEmpleado, cubrioTurno, ...rest } =
       movimiento.toPrimitives();
 
     await this.prisma.movimiento.create({
       data: {
         ...rest,
         fecha: new Date(fecha),
+        cubrio_turno: cubrioTurno
       },
     });
   }
 
   async update(movimiento: Movimiento): Promise<void> {
-    const { id, fecha, empleado, rol, tipoEmpleado, ...data } =
-      movimiento.toPrimitives();
+    const primitives = movimiento.toPrimitives();
+
     await this.prisma.movimiento.update({
-      where: { id: id! },
-      data: data,
+      where: {
+        id: primitives.id!,
+      },
+      data: {
+        empleadoId: primitives.empleadoId,
+        rolId: primitives.rolId,
+        tipoId: primitives.tipoId,
+        horasTrabajadas: primitives.horasTrabajadas,
+        entregas: primitives.entregas,
+        fecha: primitives.fecha,
+        cubrio_turno: primitives.cubrioTurno,
+      },
     });
   }
 
@@ -45,15 +56,22 @@ export class PrismaMovimientoRepository implements IMovimientoRepository {
       Number(record.horasTrabajadas),
       record.entregas,
       record.fecha,
+      record.cubrio_turno,
       record.Empleado,
       record.Role,
-      record.TipoEmpleado,
-      record.cubrio_turno
+      record.TipoEmpleado
     );
   }
 
-  async findAll(): Promise<Movimiento[]> {
+  async findAll(search?: string): Promise<Movimiento[]> {
     const records = await this.prisma.movimiento.findMany({
+      where: {
+        Empleado: search
+          ? {
+              nombre: { contains: search },
+            }
+          : undefined,
+      },
       include: { Empleado: true, Role: true, TipoEmpleado: true },
     });
     return records.map(
@@ -66,10 +84,10 @@ export class PrismaMovimientoRepository implements IMovimientoRepository {
           Number(r.horasTrabajadas),
           r.entregas,
           r.fecha,
+          r.cubrio_turno,
           r.Empleado,
           r.Role,
-          r.TipoEmpleado,
-          r.cubrio_turno
+          r.TipoEmpleado
         )
     );
   }
@@ -91,10 +109,10 @@ export class PrismaMovimientoRepository implements IMovimientoRepository {
               Number(r.horasTrabajadas),
               r.entregas,
               r.fecha,
+              r.cubrio_turno,
               r.Empleado,
               r.Role,
-              r.TipoEmpleado,
-              r.cubrio_turno
+              r.TipoEmpleado
             )
         )
       : null;

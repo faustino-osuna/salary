@@ -1,7 +1,6 @@
 import { IMovimientoRepository } from "../../domain/repositories/IMovimientoRepository";
 import {
   UpdateMovimientoDTO,
-  UpdateMovimientoSchema,
 } from "../dto/UpdateMovimientoDTO";
 import { Movimiento } from "../../domain/entities/Movimiento";
 
@@ -14,14 +13,17 @@ export class UpdateMovimientoUseCase {
       throw new Error("Movimiento no encontrado");
     }
 
-    const parsed = UpdateMovimientoSchema.parse(dto);
+    const dataToUpdate = {
+      empleadoId: dto.empleadoId,
+      rolId: dto.rolId,
+      tipoId: dto.tipoId,
+      horasTrabajadas: dto.horasTrabajadas,
+      entregas: dto.entregas,
+      fecha: new Date(dto.fecha),
+      cubrioTurno: dto.cubrioTurno
+    };
 
-    // Convertimos fecha si viene como string
-    if (parsed.fecha) {
-      parsed.fecha = new Date(parsed.fecha);
-    }
-
-    movimiento.actualizar(dto);
+    movimiento.actualizar(dataToUpdate);
 
     await this.repository.update(movimiento);
     return movimiento;
