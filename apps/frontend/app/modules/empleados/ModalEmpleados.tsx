@@ -91,7 +91,7 @@ export default function ModalEmpleados({ open, onClose, data, onSaved, editMode 
   }
 }, [data, form]);
 
-  return <FormModal<EmpleadoForm> title="Empleado" open={open} onClose={onClose} form={form} maxWidth="md" onSubmit={form.handleSubmit(onSubmit)}>
+  return <FormModal<EmpleadoForm> title="Empleado" open={open} onClose={onClose} form={form} width="300%" onSubmit={form.handleSubmit(onSubmit)}>
     <Grid size={6}>
       <FormField title="Nombre" name="nombre"/>
     </Grid>
