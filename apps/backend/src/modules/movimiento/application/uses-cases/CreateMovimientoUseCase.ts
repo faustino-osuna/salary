@@ -13,7 +13,8 @@ export class CreateMovimientoUseCase {
       data.tipoId,
       data.horasTrabajadas ?? 8,
       data.entregas ?? 0,
-      new Date(data.fecha)
+      new Date(data.fecha),
+      data.cubrioTurno
     );
     await this.repository.create(movimiento);
   }

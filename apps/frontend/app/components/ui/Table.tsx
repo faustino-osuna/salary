@@ -89,7 +89,7 @@ export default function SimpleTable({
               {columns.map((col) => (
                 <TableCell key={col}>{col}</TableCell>
               ))}
-              {deleteFn && <TableCell>Acciones</TableCell>}
+              <TableCell>Acciones</TableCell>
             </TableRow>
           </TableHead>
 
@@ -105,22 +105,20 @@ export default function SimpleTable({
                     const value = row[col];
                     return (
                       <TableCell key={col}>
-                        {value && typeof value === "object"
+                        {value !== null && value !== undefined && typeof value === "object"
                           ? value.nombre
-                          : value}
+                          : String(value)}
                       </TableCell>
                     );
                   })}
-                  {deleteFn && (
-                    <TableCell>
-                      <IconButton color="primary" onClick={() => handleEdit(row)}>
-                        <EditIcon />
-                      </IconButton>
-                      <IconButton color="error" onClick={() => handleDelete(row)}>
-                        <DeleteIcon />
-                      </IconButton>
-                    </TableCell>
-                  )}
+                  <TableCell>
+                    <IconButton color="primary" onClick={() => handleEdit(row)}>
+                      <EditIcon />
+                    </IconButton>
+                    <IconButton color="error" onClick={() => handleDelete(row)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </TableCell>
                 </TableRow>
               ))
             )}

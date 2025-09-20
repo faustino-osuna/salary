@@ -8,3 +8,5 @@ const controller = new MovimientoController(repository);
 
 movimientoRouter.get("/", controller.findAll);
 movimientoRouter.post("/", controller.create);
+movimientoRouter.put("/:id", controller.update);
+movimientoRouter.delete("/:id", controller.delete);

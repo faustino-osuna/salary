@@ -12,7 +12,7 @@ interface FormModalProps<T extends FieldValues = FieldValues> {
   onClose: () => void;
   form: UseFormReturn<T>;
   onSubmit?: (event: FormEvent<HTMLFormElement>) => void;
-  maxWidth?: string;
+  width?: string;
   fullWidth?: boolean;
   isMutating?: boolean;
   saveText?: string;
@@ -27,7 +27,7 @@ export default function FormModal<T extends FieldValues>({
   onClose,
   form,
   onSubmit,
-  maxWidth,
+  width,
   fullWidth = false,
   isMutating = false,
   saveText = "Guardar",
@@ -39,10 +39,9 @@ export default function FormModal<T extends FieldValues>({
     <Modal
       open={open}
       {...props}
-      maxWidth={false}
       scroll="body"
       fullWidth={fullWidth}
-      PaperProps={{ sx: { maxWidth: maxWidth ?? "auto" } }}
+      PaperProps={{ sx: { width: width ?? "auto" } }}
     >
       <Stack p={4} gap={3} width="100%">
         <Stack direction="row" justifyContent="space-between">

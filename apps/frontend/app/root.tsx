@@ -13,6 +13,8 @@ import Sidebar from "./components/ui/SideBar";
 import { navItems } from "./constants/general.constants";
 import { Stack } from "@mui/material";
 import Default from "./components/containers/Default";
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
 const queryClient = new QueryClient();
 
@@ -53,7 +55,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <Outlet />
+      <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <Outlet />
+      </LocalizationProvider>
     </QueryClientProvider>
   );
 }

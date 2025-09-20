@@ -14,6 +14,7 @@ export const CreateMovimientoSchema = z.object({
     .refine((val) => !isNaN(Date.parse(val)), {
       message: "La fecha debe ser un string ISO válido",
     }),
+  cubrioTurno: z.boolean()
 });
 
 export type CreateMovimientoDTO = z.infer<typeof CreateMovimientoSchema>;
